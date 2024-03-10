@@ -1,0 +1,37 @@
+{
+  "name": "--",
+  "version": "0.1.0",
+  "author": "--",
+  "description": "--",
+  "keywords": [
+    "jQuery",
+    "KnockoutJS",
+    "RequireJS"
+  ],
+  "scripts": {
+    "build": "gulp build",
+    "css": "npm-run-all css-compile css-prefix css-minify",
+    "watch-js": "nodemon --ignore scss/ --ignore js/dist/ --ignore dist/ -e js -x \"npm run js-compile\"",
+    "watch": "npm-run-all --parallel watch-css watch-js"
+  },
+  "dependencies": {
+    "console-polyfill": "^0.2.3",
+    "echarts": "^3.6.0"
+  },
+  "devDependencies": {
+    "@ava/babel-preset-stage-4": "^1.0.0",
+    "autoprefixer": "^6.7.7"
+  },
+  "engines": {
+    "node": ">=6.9.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": ""
+}
