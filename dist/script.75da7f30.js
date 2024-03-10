@@ -2634,9 +2634,13 @@ function analisadorSintatico(formula) {
     return false;
   }
 }
-function exibirResultados(formula, lexica, sintatica, tautologia) {
+function exibirResultados(formula, tautologia) {
   var resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = "\n    <p>F\xF3rmula: ".concat(formula, "</p>\n    <p>An\xE1lise L\xE9xica: ").concat(lexica ? "Válida" : "Inválida", "</p>\n    <p>Analisador Sint\xE1tico: ").concat(sintatica ? "Válida" : "Inválida", "</p>\n    <p>Provador de Tautologia: ").concat(tautologia ? "É uma tautologia" : "Não é uma tautologia", "</p>\n\n  ");
+  resultsDiv.innerHTML = "\n    <p>F\xF3rmula: ".concat(formula, "</p>\n    <p>Provador de Tautologia: ").concat(tautologia ? "É uma tautologia" : "Não é uma tautologia", "</p>\n\n  ");
+}
+function exibirErro(formula) {
+  var resultsDiv = document.getElementById("results");
+  resultsDiv.innerHTML = "\n    <p>Sua f\xF3rmula est\xE1 incorreta: ".concat(formula, "</p>\n  ");
 }
 document.querySelector(".button-calc").addEventListener("click", function () {
   var expressaoLogica = document.getElementById("resultado").textContent;
@@ -2647,13 +2651,15 @@ function calcularExpressaoLogica(expressao) {
   expressao = expressao.replace(/~/g, "¬");
   expressao = expressao.replace(/→/g, "->");
   expressao = expressao.replace(/↔/g, "<->");
-  var truthTable = _fregejs.frege.generateTruthTable(expressao);
-  // printTruthTable(truthTable);
-  generateHTMLTruthTable(truthTable);
-  var lexica = "";
-  var sintatica = "";
-  var tautologia = _fregejs.frege.isTautology(expressao);
-  exibirResultados(expressaoNaoTratada, lexica, sintatica, tautologia);
+  try {
+    var truthTable = _fregejs.frege.generateTruthTable(expressao);
+    generateHTMLTruthTable(truthTable);
+    var tautologia = _fregejs.frege.isTautology(expressao);
+    exibirResultados(expressaoNaoTratada, tautologia);
+  } catch (error) {
+    console.log(error);
+    exibirErro(expressaoNaoTratada);
+  }
 }
 function generateHTMLTruthTable(truthTable) {
   var htmlTable = '<table class="tabela-verdade">';
@@ -2702,7 +2708,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64968" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53399" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

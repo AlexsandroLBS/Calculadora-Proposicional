@@ -50,16 +50,20 @@ function analisadorSintatico(formula) {
 }
 
 
-function exibirResultados(formula, lexica, sintatica, tautologia) {
+function exibirResultados(formula, tautologia) {
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = `
     <p>Fórmula: ${formula}</p>
-    <p>Análise Léxica: ${lexica ? "Válida" : "Inválida"}</p>
-    <p>Analisador Sintático: ${sintatica ? "Válida" : "Inválida"}</p>
     <p>Provador de Tautologia: ${
       tautologia ? "É uma tautologia" : "Não é uma tautologia"
     }</p>
 
+  `;
+}
+function exibirErro(formula) {
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.innerHTML = `
+    <p>Sua fórmula está incorreta: ${formula}</p>
   `;
 }
 
@@ -75,13 +79,16 @@ function calcularExpressaoLogica(expressao) {
 
     expressao = expressao.replace(/→/g, "->");
     expressao = expressao.replace(/↔/g, "<->");
-    const truthTable = frege.generateTruthTable(expressao);
-    // printTruthTable(truthTable);
-    generateHTMLTruthTable(truthTable)
-    const lexica = "";
-    const sintatica = "";
-    const tautologia = frege.isTautology(expressao);
-    exibirResultados(expressaoNaoTratada, lexica, sintatica, tautologia);
+
+    try{
+      const truthTable = frege.generateTruthTable(expressao);
+      generateHTMLTruthTable(truthTable)
+      const tautologia = frege.isTautology(expressao);
+      exibirResultados(expressaoNaoTratada, tautologia);
+    } catch(error){
+      console.log(error)
+      exibirErro(expressaoNaoTratada)
+    }
 }
 
 
